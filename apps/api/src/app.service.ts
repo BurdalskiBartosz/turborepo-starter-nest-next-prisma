@@ -4,9 +4,10 @@ import { PrismaService } from './prisma.service';
 @Injectable()
 export class AppService {
   constructor(private readonly db: PrismaService) {}
-  getHello(): string {
-    const user = this.db.user.findMany();
-    console.log(user);
+  async getHello() {
+    const user = await this.db.user.findMany();
+    const xd = await this.db.test.findFirst();
+    console.log(user, xd);
     return 'Hello World!';
   }
 }

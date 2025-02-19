@@ -124,6 +124,12 @@ exports.Prisma.UserScalarFieldEnum = {
   emailVerified: 'emailVerified'
 };
 
+exports.Prisma.TestScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  description: 'description'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -141,7 +147,8 @@ exports.Prisma.NullsOrder = {
 
 
 exports.Prisma.ModelName = {
-  User: 'User'
+  User: 'User',
+  Test: 'Test'
 };
 
 /**
