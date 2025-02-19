@@ -882,8 +882,7 @@ ${c}`);
       });
     }
     async function zu() {
-      var _a2;
-      return typeof Qr.default.machine == "function" ? Qr.default.machine() : (_a2 = await Gr("uname -m")) == null ? void 0 : _a2.trim();
+      return typeof Qr.default.machine == "function" ? Qr.default.machine() : (await Gr("uname -m"))?.trim();
     }
     function Go(e) {
       return e.startsWith("1.");
@@ -950,20 +949,17 @@ Details: ${t.message}`;
     var Kr = _(require("fs"));
     var gt = _(require("path"));
     function ps(e) {
-      let t = e.ignoreProcessEnv ? {} : process.env, r = (n) => {
-        var _a2;
-        return ((_a2 = n.match(/(.?\${(?:[a-zA-Z0-9_]+)?})/g)) == null ? void 0 : _a2.reduce(function(o, s) {
-          let a = /(.?)\${([a-zA-Z0-9_]+)?}/g.exec(s);
-          if (!a) return o;
-          let l = a[1], u, c;
-          if (l === "\\") c = a[0], u = c.replace("\\$", "$");
-          else {
-            let p = a[2];
-            c = a[0].substring(l.length), u = Object.hasOwnProperty.call(t, p) ? t[p] : e.parsed[p] || "", u = r(u);
-          }
-          return o.replace(c, u);
-        }, n)) ?? n;
-      };
+      let t = e.ignoreProcessEnv ? {} : process.env, r = (n) => n.match(/(.?\${(?:[a-zA-Z0-9_]+)?})/g)?.reduce(function(o, s) {
+        let a = /(.?)\${([a-zA-Z0-9_]+)?}/g.exec(s);
+        if (!a) return o;
+        let l = a[1], u, c;
+        if (l === "\\") c = a[0], u = c.replace("\\$", "$");
+        else {
+          let p = a[2];
+          c = a[0].substring(l.length), u = Object.hasOwnProperty.call(t, p) ? t[p] : e.parsed[p] || "", u = r(u);
+        }
+        return o.replace(c, u);
+      }, n) ?? n;
       for (let n in e.parsed) {
         let i = Object.hasOwnProperty.call(t, n) ? t[n] : e.parsed[n];
         e.parsed[n] = r(i);
@@ -973,15 +969,14 @@ Details: ${t.message}`;
     }
     var Ei = F("prisma:tryLoadEnv");
     function Yt({ rootEnvPath: e, schemaEnvPath: t }, r = { conflictCheck: "none" }) {
-      var _a2, _b;
       let n = ds(e);
       r.conflictCheck !== "none" && wc(n, t, r.conflictCheck);
       let i = null;
-      return ms(n == null ? void 0 : n.path, t) || (i = ds(t)), !n && !i && Ei("No Environment variables loaded"), (i == null ? void 0 : i.dotenvResult.error) ? console.error(de(H("Schema Env Error: ")) + i.dotenvResult.error) : { message: [n == null ? void 0 : n.message, i == null ? void 0 : i.message].filter(Boolean).join(`
-`), parsed: { ...(_a2 = n == null ? void 0 : n.dotenvResult) == null ? void 0 : _a2.parsed, ...(_b = i == null ? void 0 : i.dotenvResult) == null ? void 0 : _b.parsed } };
+      return ms(n?.path, t) || (i = ds(t)), !n && !i && Ei("No Environment variables loaded"), i?.dotenvResult.error ? console.error(de(H("Schema Env Error: ")) + i.dotenvResult.error) : { message: [n?.message, i?.message].filter(Boolean).join(`
+`), parsed: { ...n?.dotenvResult?.parsed, ...i?.dotenvResult?.parsed } };
     }
     function wc(e, t, r) {
-      let n = e == null ? void 0 : e.dotenvResult.parsed, i = !ms(e == null ? void 0 : e.path, t);
+      let n = e?.dotenvResult.parsed, i = !ms(e?.path, t);
       if (n && t && i && Kr.default.existsSync(t)) {
         let o = bi.default.parse(Kr.default.readFileSync(t)), s = [];
         for (let a in o) n[a] === o[a] && s.push(a);
@@ -1022,7 +1017,7 @@ Env vars from ${X(l)} overwrite the ones from ${X(a)}
     var fs = "library";
     function ht(e) {
       let t = Pc();
-      return t || ((e == null ? void 0 : e.config.engineType) === "library" ? "library" : (e == null ? void 0 : e.config.engineType) === "binary" ? "binary" : (e == null ? void 0 : e.config.engineType) === "client" ? "client" : fs);
+      return t || (e?.config.engineType === "library" ? "library" : e?.config.engineType === "binary" ? "binary" : e?.config.engineType === "client" ? "client" : fs);
     }
     function Pc() {
       let e = process.env.PRISMA_CLIENT_ENGINE_TYPE;
@@ -1031,7 +1026,7 @@ Env vars from ${X(l)} overwrite the ones from ${X(a)}
     var bs = "prisma+postgres";
     var Yr = `${bs}:`;
     function wi(e) {
-      return (e == null ? void 0 : e.startsWith(`${Yr}//`)) ?? false;
+      return e?.startsWith(`${Yr}//`) ?? false;
     }
     var zt;
     ((t) => {
@@ -2240,12 +2235,11 @@ ${(0, xs.default)(Rc(n), 2)}
       return { functionName: `prisma.${t}()`, message: e, isPanic: r ?? false, callArguments: n };
     }
     function Np({ callsite: e, message: t, originalMethod: r, isPanic: n, callArguments: i }, o) {
-      var _a2;
       let s = Dp({ message: t, originalMethod: r, isPanic: n, callArguments: i });
       if (!e || typeof window < "u" || process.env.NODE_ENV === "production") return s;
       let a = e.getLocation();
       if (!a || !a.lineNumber || !a.columnNumber) return s;
-      let l = Math.max(1, a.lineNumber - 3), u = (_a2 = cn.read(a.fileName)) == null ? void 0 : _a2.slice(l, a.lineNumber), c = u == null ? void 0 : u.lineAt(a.lineNumber);
+      let l = Math.max(1, a.lineNumber - 3), u = cn.read(a.fileName)?.slice(l, a.lineNumber), c = u?.lineAt(a.lineNumber);
       if (u && c) {
         let p = Fp(c), d = Lp(c);
         if (!d) return s;
@@ -2374,7 +2368,7 @@ ${(0, xs.default)(Rc(n), 2)}
       newLine() {
         this.lines.push(this.indentedCurrentLine()), this.currentLine = "", this.marginSymbol = void 0;
         let t = this.afterNextNewLineCallback;
-        return this.afterNextNewLineCallback = void 0, t == null ? void 0 : t(), this;
+        return this.afterNextNewLineCallback = void 0, t?.(), this;
       }
       withIndent(t) {
         return this.indent(), t(this), this.unindent(), this;
@@ -2508,8 +2502,7 @@ ${(0, xs.default)(Rc(n), 2)}
         return s;
       }
       getDeepFieldValue(r) {
-        var _a2;
-        return r.length === 0 ? this : (_a2 = this.getDeepField(r)) == null ? void 0 : _a2.value;
+        return r.length === 0 ? this : this.getDeepField(r)?.value;
       }
       hasField(r) {
         return !!this.getField(r);
@@ -2527,8 +2520,7 @@ ${(0, xs.default)(Rc(n), 2)}
         return Object.keys(this.fields).length === 0;
       }
       getFieldValue(r) {
-        var _a2;
-        return (_a2 = this.getField(r)) == null ? void 0 : _a2.value;
+        return this.getField(r)?.value;
       }
       getDeepSubSelectionValue(r) {
         let n = this;
@@ -2554,15 +2546,13 @@ ${(0, xs.default)(Rc(n), 2)}
         return i;
       }
       getSelectionParent() {
-        var _a2, _b;
-        let r = (_a2 = this.getField("select")) == null ? void 0 : _a2.value.asObject();
+        let r = this.getField("select")?.value.asObject();
         if (r) return { kind: "select", value: r };
-        let n = (_b = this.getField("include")) == null ? void 0 : _b.value.asObject();
+        let n = this.getField("include")?.value.asObject();
         if (n) return { kind: "include", value: n };
       }
       getSubSelectionValue(r) {
-        var _a2;
-        return (_a2 = this.getSelectionParent()) == null ? void 0 : _a2.value.fields[r].value;
+        return this.getSelectionParent()?.value.fields[r].value;
       }
       getPrintWidth() {
         let r = Object.values(this.fields);
@@ -2672,14 +2662,12 @@ ${(0, xs.default)(Rc(n), 2)}
       }
     }
     function Up(e, t) {
-      var _a2, _b, _c2;
-      let r = (_a2 = t.arguments.getDeepSubSelectionValue(e.selectionPath)) == null ? void 0 : _a2.asObject();
-      r && ((_b = r.getField(e.firstField)) == null ? void 0 : _b.markAsError(), (_c2 = r.getField(e.secondField)) == null ? void 0 : _c2.markAsError()), t.addErrorMessage((n) => `Please ${n.bold("either")} use ${n.green(`\`${e.firstField}\``)} or ${n.green(`\`${e.secondField}\``)}, but ${n.red("not both")} at the same time.`);
+      let r = t.arguments.getDeepSubSelectionValue(e.selectionPath)?.asObject();
+      r && (r.getField(e.firstField)?.markAsError(), r.getField(e.secondField)?.markAsError()), t.addErrorMessage((n) => `Please ${n.bold("either")} use ${n.green(`\`${e.firstField}\``)} or ${n.green(`\`${e.secondField}\``)}, but ${n.red("not both")} at the same time.`);
     }
     function Qp(e, t) {
-      var _a2, _b;
-      let [r, n] = ir(e.selectionPath), i = e.outputType, o = (_a2 = t.arguments.getDeepSelectionParent(r)) == null ? void 0 : _a2.value;
-      if (o && ((_b = o.getField(n)) == null ? void 0 : _b.markAsError(), i)) for (let s of i.fields) s.isRelation && o.addSuggestion(new pe(s.name, "true"));
+      let [r, n] = ir(e.selectionPath), i = e.outputType, o = t.arguments.getDeepSelectionParent(r)?.value;
+      if (o && (o.getField(n)?.markAsError(), i)) for (let s of i.fields) s.isRelation && o.addSuggestion(new pe(s.name, "true"));
       t.addErrorMessage((s) => {
         let a = `Invalid scalar field ${s.red(`\`${n}\``)} for ${s.bold("include")} statement`;
         return i ? a += ` on model ${s.bold(i.name)}. ${or(s)}` : a += ".", a += `
@@ -2687,10 +2675,9 @@ Note that ${s.bold("include")} statements only accept relation fields.`, a;
       });
     }
     function Gp(e, t, r) {
-      var _a2, _b;
-      let n = (_a2 = t.arguments.getDeepSubSelectionValue(e.selectionPath)) == null ? void 0 : _a2.asObject();
+      let n = t.arguments.getDeepSubSelectionValue(e.selectionPath)?.asObject();
       if (n) {
-        let i = (_b = n.getField("omit")) == null ? void 0 : _b.value.asObject();
+        let i = n.getField("omit")?.value.asObject();
         if (i) {
           Jp(e, t, i);
           return;
@@ -2700,7 +2687,7 @@ Note that ${s.bold("include")} statements only accept relation fields.`, a;
           return;
         }
       }
-      if (r == null ? void 0 : r[xt(e.outputType.name)]) {
+      if (r?.[xt(e.outputType.name)]) {
         Hp(e, t);
         return;
       }
@@ -2712,20 +2699,18 @@ Note that ${s.bold("include")} statements only accept relation fields.`, a;
       t.addErrorMessage((n) => `The ${n.red("omit")} statement includes every field of the model ${n.bold(e.outputType.name)}. At least one field must be included in the result`);
     }
     function Wp(e, t) {
-      var _a2;
-      let r = e.outputType, n = (_a2 = t.arguments.getDeepSelectionParent(e.selectionPath)) == null ? void 0 : _a2.value, i = (n == null ? void 0 : n.isEmpty()) ?? false;
+      let r = e.outputType, n = t.arguments.getDeepSelectionParent(e.selectionPath)?.value, i = n?.isEmpty() ?? false;
       n && (n.removeAllFields(), na(n, r)), t.addErrorMessage((o) => i ? `The ${o.red("`select`")} statement for type ${o.bold(r.name)} must not be empty. ${or(o)}` : `The ${o.red("`select`")} statement for type ${o.bold(r.name)} needs ${o.bold("at least one truthy value")}.`);
     }
     function Hp(e, t) {
-      var _a2, _b;
       let r = new nr();
       for (let i of e.outputType.fields) i.isRelation || r.addField(i.name, "false");
       let n = new pe("omit", r).makeRequired();
       if (e.selectionPath.length === 0) t.arguments.addSuggestion(n);
       else {
-        let [i, o] = ir(e.selectionPath), a = (_b = (_a2 = t.arguments.getDeepSelectionParent(i)) == null ? void 0 : _a2.value.asObject()) == null ? void 0 : _b.getField(o);
+        let [i, o] = ir(e.selectionPath), a = t.arguments.getDeepSelectionParent(i)?.value.asObject()?.getField(o);
         if (a) {
-          let l = (a == null ? void 0 : a.value.asObject()) ?? new St();
+          let l = a?.value.asObject() ?? new St();
           l.addSuggestion(n), a.value = l;
         }
       }
@@ -2758,16 +2743,14 @@ Note that ${s.bold("include")} statements only accept relation fields.`, a;
       r.parentKind !== "unknown" && r.field.value.markAsError(), t.addErrorMessage((n) => `Invalid value for selection field \`${n.red(r.fieldName)}\`: ${e.underlyingError}`);
     }
     function zp(e, t) {
-      var _a2, _b;
-      let r = e.argumentPath[0], n = (_a2 = t.arguments.getDeepSubSelectionValue(e.selectionPath)) == null ? void 0 : _a2.asObject();
-      n && ((_b = n.getField(r)) == null ? void 0 : _b.markAsError(), ad(n, e.arguments)), t.addErrorMessage((i) => ta(i, r, e.arguments.map((o) => o.name)));
+      let r = e.argumentPath[0], n = t.arguments.getDeepSubSelectionValue(e.selectionPath)?.asObject();
+      n && (n.getField(r)?.markAsError(), ad(n, e.arguments)), t.addErrorMessage((i) => ta(i, r, e.arguments.map((o) => o.name)));
     }
     function Zp(e, t) {
-      var _a2, _b, _c2;
-      let [r, n] = ir(e.argumentPath), i = (_a2 = t.arguments.getDeepSubSelectionValue(e.selectionPath)) == null ? void 0 : _a2.asObject();
+      let [r, n] = ir(e.argumentPath), i = t.arguments.getDeepSubSelectionValue(e.selectionPath)?.asObject();
       if (i) {
-        (_b = i.getDeepField(e.argumentPath)) == null ? void 0 : _b.markAsError();
-        let o = (_c2 = i.getDeepFieldValue(r)) == null ? void 0 : _c2.asObject();
+        i.getDeepField(e.argumentPath)?.markAsError();
+        let o = i.getDeepFieldValue(r)?.asObject();
         o && oa(o, e.inputType);
       }
       t.addErrorMessage((o) => ta(o, n, e.inputType.fields.map((s) => s.name)));
@@ -2777,12 +2760,11 @@ Note that ${s.bold("include")} statements only accept relation fields.`, a;
       return i && n.push(`Did you mean \`${e.green(i)}\`?`), r.length > 0 && n.push(or(e)), n.join(" ");
     }
     function Xp(e, t) {
-      var _a2, _b;
       let r;
-      t.addErrorMessage((l) => (r == null ? void 0 : r.value) instanceof W && r.value.text === "null" ? `Argument \`${l.green(o)}\` must not be ${l.red("null")}.` : `Argument \`${l.green(o)}\` is missing.`);
-      let n = (_a2 = t.arguments.getDeepSubSelectionValue(e.selectionPath)) == null ? void 0 : _a2.asObject();
+      t.addErrorMessage((l) => r?.value instanceof W && r.value.text === "null" ? `Argument \`${l.green(o)}\` must not be ${l.red("null")}.` : `Argument \`${l.green(o)}\` is missing.`);
+      let n = t.arguments.getDeepSubSelectionValue(e.selectionPath)?.asObject();
       if (!n) return;
-      let [i, o] = ir(e.argumentPath), s = new nr(), a = (_b = n.getDeepFieldValue(i)) == null ? void 0 : _b.asObject();
+      let [i, o] = ir(e.argumentPath), s = new nr(), a = n.getDeepFieldValue(i)?.asObject();
       if (a) if (r = a.getField(o), r && a.removeField(o), e.inputTypes.length === 1 && e.inputTypes[0].kind === "object") {
         for (let l of e.inputTypes[0].fields) s.addField(l.name, l.typeNames.join(" | "));
         a.addSuggestion(new pe(o, s).makeRequired());
@@ -2795,17 +2777,15 @@ Note that ${s.bold("include")} statements only accept relation fields.`, a;
       return e.kind === "list" ? `${ra(e.elementType)}[]` : e.name;
     }
     function ed(e, t) {
-      var _a2, _b;
-      let r = e.argument.name, n = (_a2 = t.arguments.getDeepSubSelectionValue(e.selectionPath)) == null ? void 0 : _a2.asObject();
-      n && ((_b = n.getDeepFieldValue(e.argumentPath)) == null ? void 0 : _b.markAsError()), t.addErrorMessage((i) => {
+      let r = e.argument.name, n = t.arguments.getDeepSubSelectionValue(e.selectionPath)?.asObject();
+      n && n.getDeepFieldValue(e.argumentPath)?.markAsError(), t.addErrorMessage((i) => {
         let o = hn("or", e.argument.typeNames.map((s) => i.green(s)));
         return `Argument \`${i.bold(r)}\`: Invalid value provided. Expected ${o}, provided ${i.red(e.inferredType)}.`;
       });
     }
     function td(e, t) {
-      var _a2, _b;
-      let r = e.argument.name, n = (_a2 = t.arguments.getDeepSubSelectionValue(e.selectionPath)) == null ? void 0 : _a2.asObject();
-      n && ((_b = n.getDeepFieldValue(e.argumentPath)) == null ? void 0 : _b.markAsError()), t.addErrorMessage((i) => {
+      let r = e.argument.name, n = t.arguments.getDeepSubSelectionValue(e.selectionPath)?.asObject();
+      n && n.getDeepFieldValue(e.argumentPath)?.markAsError(), t.addErrorMessage((i) => {
         let o = [`Invalid value for argument \`${i.bold(r)}\``];
         if (e.underlyingError && o.push(`: ${e.underlyingError}`), o.push("."), e.argument.typeNames.length > 0) {
           let s = hn("or", e.argument.typeNames.map((a) => i.green(a)));
@@ -2815,11 +2795,10 @@ Note that ${s.bold("include")} statements only accept relation fields.`, a;
       });
     }
     function rd(e, t) {
-      var _a2, _b;
-      let r = e.argument.name, n = (_a2 = t.arguments.getDeepSubSelectionValue(e.selectionPath)) == null ? void 0 : _a2.asObject(), i;
+      let r = e.argument.name, n = t.arguments.getDeepSubSelectionValue(e.selectionPath)?.asObject(), i;
       if (n) {
-        let s = (_b = n.getDeepField(e.argumentPath)) == null ? void 0 : _b.value;
-        s == null ? void 0 : s.markAsError(), s instanceof W && (i = s.text);
+        let s = n.getDeepField(e.argumentPath)?.value;
+        s?.markAsError(), s instanceof W && (i = s.text);
       }
       t.addErrorMessage((o) => {
         let s = ["Unable to fit value"];
@@ -2827,10 +2806,9 @@ Note that ${s.bold("include")} statements only accept relation fields.`, a;
       });
     }
     function nd(e, t) {
-      var _a2, _b;
-      let r = e.argumentPath[e.argumentPath.length - 1], n = (_a2 = t.arguments.getDeepSubSelectionValue(e.selectionPath)) == null ? void 0 : _a2.asObject();
+      let r = e.argumentPath[e.argumentPath.length - 1], n = t.arguments.getDeepSubSelectionValue(e.selectionPath)?.asObject();
       if (n) {
-        let i = (_b = n.getDeepFieldValue(e.argumentPath)) == null ? void 0 : _b.asObject();
+        let i = n.getDeepFieldValue(e.argumentPath)?.asObject();
         i && oa(i, e.inputType);
       }
       t.addErrorMessage((i) => {
@@ -2839,10 +2817,9 @@ Note that ${s.bold("include")} statements only accept relation fields.`, a;
       });
     }
     function id(e, t) {
-      var _a2, _b;
-      let r = e.argumentPath[e.argumentPath.length - 1], n = (_a2 = t.arguments.getDeepSubSelectionValue(e.selectionPath)) == null ? void 0 : _a2.asObject(), i = [];
+      let r = e.argumentPath[e.argumentPath.length - 1], n = t.arguments.getDeepSubSelectionValue(e.selectionPath)?.asObject(), i = [];
       if (n) {
-        let o = (_b = n.getDeepFieldValue(e.argumentPath)) == null ? void 0 : _b.asObject();
+        let o = n.getDeepFieldValue(e.argumentPath)?.asObject();
         o && (o.markAsError(), i = Object.keys(o.getFields()));
       }
       t.addErrorMessage((o) => {
@@ -2863,11 +2840,10 @@ Note that ${s.bold("include")} statements only accept relation fields.`, a;
       for (let r of t) e.hasField(r.name) || e.addSuggestion(new pe(r.name, r.typeNames.join(" | ")));
     }
     function ia(e, t) {
-      var _a2, _b, _c2, _d2;
-      let [r, n] = ir(e), i = (_a2 = t.arguments.getDeepSubSelectionValue(r)) == null ? void 0 : _a2.asObject();
+      let [r, n] = ir(e), i = t.arguments.getDeepSubSelectionValue(r)?.asObject();
       if (!i) return { parentKind: "unknown", fieldName: n };
-      let o = (_b = i.getFieldValue("select")) == null ? void 0 : _b.asObject(), s = (_c2 = i.getFieldValue("include")) == null ? void 0 : _c2.asObject(), a = (_d2 = i.getFieldValue("omit")) == null ? void 0 : _d2.asObject(), l = o == null ? void 0 : o.getField(n);
-      return o && l ? { parentKind: "select", parent: o, field: l, fieldName: n } : (l = s == null ? void 0 : s.getField(n), s && l ? { parentKind: "include", field: l, parent: s, fieldName: n } : (l = a == null ? void 0 : a.getField(n), a && l ? { parentKind: "omit", field: l, parent: a, fieldName: n } : { parentKind: "unknown", fieldName: n }));
+      let o = i.getFieldValue("select")?.asObject(), s = i.getFieldValue("include")?.asObject(), a = i.getFieldValue("omit")?.asObject(), l = o?.getField(n);
+      return o && l ? { parentKind: "select", parent: o, field: l, fieldName: n } : (l = s?.getField(n), s && l ? { parentKind: "include", field: l, parent: s, fieldName: n } : (l = a?.getField(n), a && l ? { parentKind: "omit", field: l, parent: a, fieldName: n } : { parentKind: "unknown", fieldName: n }));
     }
     function oa(e, t) {
       if (t.kind === "object") for (let r of t.fields) e.hasField(r.name) || e.addSuggestion(new pe(r.name, r.typeNames.join(" | ")));
@@ -3019,8 +2995,7 @@ Note that ${s.bold("include")} statements only accept relation fields.`, a;
         this._map = /* @__PURE__ */ new Map();
       }
       get(t) {
-        var _a2;
-        return (_a2 = this._map.get(t)) == null ? void 0 : _a2.value;
+        return this._map.get(t)?.value;
       }
       set(t, r) {
         this._map.set(t, { value: r });
@@ -3053,8 +3028,7 @@ Note that ${s.bold("include")} statements only accept relation fields.`, a;
       return r ? yt(r, ({ needs: n, compute: i }, o) => ({ name: o, needs: n ? Object.keys(n).filter((s) => n[s]) : [], compute: dd(t, o, i) })) : {};
     }
     function dd(e, t, r) {
-      var _a2;
-      let n = (_a2 = e == null ? void 0 : e[t]) == null ? void 0 : _a2.compute;
+      let n = e?.[t]?.compute;
       return n ? (i) => r({ ...i, [t]: n(i) }) : r;
     }
     function da(e, t) {
@@ -3076,36 +3050,27 @@ Note that ${s.bold("include")} statements only accept relation fields.`, a;
         this.computedFieldsCache = new Te();
         this.modelExtensionsCache = new Te();
         this.queryCallbacksCache = new Te();
-        this.clientExtensions = pr(() => {
-          var _a2, _b;
-          return this.extension.client ? { ...(_a2 = this.previous) == null ? void 0 : _a2.getAllClientExtensions(), ...this.extension.client } : (_b = this.previous) == null ? void 0 : _b.getAllClientExtensions();
-        });
+        this.clientExtensions = pr(() => this.extension.client ? { ...this.previous?.getAllClientExtensions(), ...this.extension.client } : this.previous?.getAllClientExtensions());
         this.batchCallbacks = pr(() => {
-          var _a2, _b;
-          let t2 = ((_a2 = this.previous) == null ? void 0 : _a2.getAllBatchQueryCallbacks()) ?? [], r2 = (_b = this.extension.query) == null ? void 0 : _b.$__internalBatch;
+          let t2 = this.previous?.getAllBatchQueryCallbacks() ?? [], r2 = this.extension.query?.$__internalBatch;
           return r2 ? t2.concat(r2) : t2;
         });
       }
       getAllComputedFields(t) {
-        return this.computedFieldsCache.getOrCreate(t, () => {
-          var _a2;
-          return pa((_a2 = this.previous) == null ? void 0 : _a2.getAllComputedFields(t), this.extension, t);
-        });
+        return this.computedFieldsCache.getOrCreate(t, () => pa(this.previous?.getAllComputedFields(t), this.extension, t));
       }
       getAllClientExtensions() {
         return this.clientExtensions.get();
       }
       getAllModelExtensions(t) {
         return this.modelExtensionsCache.getOrCreate(t, () => {
-          var _a2, _b;
           let r = Re(t);
-          return !this.extension.model || !(this.extension.model[r] || this.extension.model.$allModels) ? (_a2 = this.previous) == null ? void 0 : _a2.getAllModelExtensions(t) : { ...(_b = this.previous) == null ? void 0 : _b.getAllModelExtensions(t), ...this.extension.model.$allModels, ...this.extension.model[r] };
+          return !this.extension.model || !(this.extension.model[r] || this.extension.model.$allModels) ? this.previous?.getAllModelExtensions(t) : { ...this.previous?.getAllModelExtensions(t), ...this.extension.model.$allModels, ...this.extension.model[r] };
         });
       }
       getAllQueryCallbacks(t, r) {
         return this.queryCallbacksCache.getOrCreate(`${t}:${r}`, () => {
-          var _a2;
-          let n = ((_a2 = this.previous) == null ? void 0 : _a2.getAllQueryCallbacks(t, r)) ?? [], i = [], o = this.extension.query;
+          let n = this.previous?.getAllQueryCallbacks(t, r) ?? [], i = [], o = this.extension.query;
           return !o || !(o[t] || o.$allModels || o[r] || o.$allOperations) ? n : (o[t] !== void 0 && (o[t][r] !== void 0 && i.push(o[t][r]), o[t].$allOperations !== void 0 && i.push(o[t].$allOperations)), t !== "$none" && o.$allModels !== void 0 && (o.$allModels[r] !== void 0 && i.push(o.$allModels[r]), o.$allModels.$allOperations !== void 0 && i.push(o.$allModels.$allOperations)), o[r] !== void 0 && i.push(o[r]), o.$allOperations !== void 0 && i.push(o.$allOperations), n.concat(i));
         });
       }
@@ -3130,24 +3095,19 @@ Note that ${s.bold("include")} statements only accept relation fields.`, a;
         return new e(new Pn(t, this.head));
       }
       getAllComputedFields(t) {
-        var _a2;
-        return (_a2 = this.head) == null ? void 0 : _a2.getAllComputedFields(t);
+        return this.head?.getAllComputedFields(t);
       }
       getAllClientExtensions() {
-        var _a2;
-        return (_a2 = this.head) == null ? void 0 : _a2.getAllClientExtensions();
+        return this.head?.getAllClientExtensions();
       }
       getAllModelExtensions(t) {
-        var _a2;
-        return (_a2 = this.head) == null ? void 0 : _a2.getAllModelExtensions(t);
+        return this.head?.getAllModelExtensions(t);
       }
       getAllQueryCallbacks(t, r) {
-        var _a2;
-        return ((_a2 = this.head) == null ? void 0 : _a2.getAllQueryCallbacks(t, r)) ?? [];
+        return this.head?.getAllQueryCallbacks(t, r) ?? [];
       }
       getAllBatchQueryCallbacks() {
-        var _a2;
-        return ((_a2 = this.head) == null ? void 0 : _a2.getAllBatchQueryCallbacks()) ?? [];
+        return this.head?.getAllBatchQueryCallbacks() ?? [];
       }
     };
     var vn = class {
@@ -3217,7 +3177,7 @@ Note that ${s.bold("include")} statements only accept relation fields.`, a;
         if (Ce(a)) continue;
         ji(a, r.nestSelection(s));
         let l = r.findField(s);
-        (n == null ? void 0 : n[s]) && !l || (e[s] = !a);
+        n?.[s] && !l || (e[s] = !a);
       }
     }
     function Ed(e, t) {
@@ -3227,13 +3187,13 @@ Note that ${s.bold("include")} statements only accept relation fields.`, a;
         let a = t.nestSelection(o);
         ji(s, a);
         let l = t.findField(o);
-        if (!((n == null ? void 0 : n[o]) && !l)) {
+        if (!(n?.[o] && !l)) {
           if (s === false || s === void 0 || Ce(s)) {
             r[o] = false;
             continue;
           }
           if (s === true) {
-            (l == null ? void 0 : l.kind) === "object" ? r[o] = mr({}, a) : r[o] = true;
+            l?.kind === "object" ? r[o] = mr({}, a) : r[o] = true;
             continue;
           }
           r[o] = mr(s, a);
@@ -3326,16 +3286,14 @@ Note that ${s.bold("include")} statements only accept relation fields.`, a;
         if (this.params.modelName) return this.params.extensions.getAllComputedFields(this.params.modelName);
       }
       findField(t) {
-        var _a2;
-        return (_a2 = this.modelOrType) == null ? void 0 : _a2.fields.find((r) => r.name === t);
+        return this.modelOrType?.fields.find((r) => r.name === t);
       }
       nestSelection(t) {
-        let r = this.findField(t), n = (r == null ? void 0 : r.kind) === "object" ? r.type : void 0;
+        let r = this.findField(t), n = r?.kind === "object" ? r.type : void 0;
         return new e({ ...this.params, modelName: n, selectionPath: this.params.selectionPath.concat(t) });
       }
       getGlobalOmit() {
-        var _a2;
-        return this.params.modelName && this.shouldApplyGlobalOmit() ? ((_a2 = this.params.globalOmit) == null ? void 0 : _a2[xt(this.params.modelName)]) ?? {} : {};
+        return this.params.modelName && this.shouldApplyGlobalOmit() ? this.params.globalOmit?.[xt(this.params.modelName)] ?? {} : {};
       }
       shouldApplyGlobalOmit() {
         switch (this.params.action) {
@@ -3540,8 +3498,7 @@ Note that ${s.bold("include")} statements only accept relation fields.`, a;
       }, getPropertyValue(r) {
         return t.getOrCreate(r, () => e.getPropertyValue(r));
       }, getPropertyDescriptor(r) {
-        var _a2;
-        return (_a2 = e.getPropertyDescriptor) == null ? void 0 : _a2.call(e, r);
+        return e.getPropertyDescriptor?.(r);
       } };
     }
     var Sn = { enumerable: true, configurable: true, writable: true };
@@ -3556,21 +3513,19 @@ Note that ${s.bold("include")} statements only accept relation fields.`, a;
         let a = r.get(s);
         return a ? a.getPropertyValue(s) : o[s];
       }, has(o, s) {
-        var _a2;
         if (n.has(s)) return true;
         let a = r.get(s);
-        return a ? ((_a2 = a.has) == null ? void 0 : _a2.call(a, s)) ?? true : Reflect.has(o, s);
+        return a ? a.has?.(s) ?? true : Reflect.has(o, s);
       }, ownKeys(o) {
         let s = Sa(Reflect.ownKeys(o), r), a = Sa(Array.from(r.keys()), r);
         return [.../* @__PURE__ */ new Set([...s, ...a, ...n])];
       }, set(o, s, a) {
-        var _a2, _b, _c2;
-        return ((_c2 = (_b = (_a2 = r.get(s)) == null ? void 0 : _a2.getPropertyDescriptor) == null ? void 0 : _b.call(_a2, s)) == null ? void 0 : _c2.writable) === false ? false : (n.add(s), Reflect.set(o, s, a));
+        return r.get(s)?.getPropertyDescriptor?.(s)?.writable === false ? false : (n.add(s), Reflect.set(o, s, a));
       }, getOwnPropertyDescriptor(o, s) {
         let a = Reflect.getOwnPropertyDescriptor(o, s);
         if (a && !a.configurable) return a;
         let l = r.get(s);
-        return l ? l.getPropertyDescriptor ? { ...Sn, ...l == null ? void 0 : l.getPropertyDescriptor(s) } : Sn : a;
+        return l ? l.getPropertyDescriptor ? { ...Sn, ...l?.getPropertyDescriptor(s) } : Sn : a;
       }, defineProperty(o, s, a) {
         return n.add(s), Reflect.defineProperty(o, s, a);
       }, getPrototypeOf: () => Object.prototype });
@@ -3588,10 +3543,7 @@ Note that ${s.bold("include")} statements only accept relation fields.`, a;
       return t;
     }
     function Sa(e, t) {
-      return e.filter((r) => {
-        var _a2, _b;
-        return ((_b = (_a2 = t.get(r)) == null ? void 0 : _a2.has) == null ? void 0 : _b.call(_a2, r)) ?? true;
-      });
+      return e.filter((r) => t.get(r)?.has?.(r) ?? true);
     }
     function _t(e) {
       return { getKeys() {
@@ -3602,7 +3554,7 @@ Note that ${s.bold("include")} statements only accept relation fields.`, a;
       } };
     }
     function Dt(e, t) {
-      return { batch: e, transaction: (t == null ? void 0 : t.kind) === "batch" ? { isolationLevel: t.options.isolationLevel } : void 0 };
+      return { batch: e, transaction: t?.kind === "batch" ? { isolationLevel: t.options.isolationLevel } : void 0 };
     }
     function Aa(e) {
       if (e === void 0) return "";
@@ -3713,7 +3665,7 @@ Prisma Accelerate has built-in connection pooling to prevent such errors: https:
       return t;
     }
     function Jd(e = {}) {
-      return (t) => (typeof (e == null ? void 0 : e._count) == "boolean" && t.forEach((r) => {
+      return (t) => (typeof e?._count == "boolean" && t.forEach((r) => {
         r._count = r._count._all;
       }), t);
     }
@@ -3810,9 +3762,8 @@ Prisma Accelerate has built-in connection pooling to prevent such errors: https:
       return e[to] ? e[to] : e;
     }
     function Va(e) {
-      var _a2;
       if (typeof e == "function") return e(this);
-      if ((_a2 = e.client) == null ? void 0 : _a2.__AccelerateEngine) {
+      if (e.client?.__AccelerateEngine) {
         let r = e.client.__AccelerateEngine;
         this._originalClient._engine = new r(this._originalClient._accelerateEngineConfig);
       }
@@ -3863,7 +3814,7 @@ Prisma Accelerate has built-in connection pooling to prevent such errors: https:
     function Ua({ result: e, modelName: t, args: r, extensions: n, runtimeDataModel: i, globalOmit: o }) {
       return n.isEmpty() || e == null || typeof e != "object" || !i.models[t] ? e : On({ result: e, args: r ?? {}, modelName: t, runtimeDataModel: i, visitor: (a, l, u) => {
         let c = Re(l);
-        return ja({ result: a, modelName: c, select: u.select, omit: u.select ? void 0 : { ...o == null ? void 0 : o[c], ...u.omit }, extensions: n });
+        return ja({ result: a, modelName: c, select: u.select, omit: u.select ? void 0 : { ...o?.[c], ...u.omit }, extensions: n });
       } });
     }
     function Qa(e) {
@@ -3899,9 +3850,8 @@ Prisma Accelerate has built-in connection pooling to prevent such errors: https:
     }
     function Ja(e, t, r, n = 0) {
       return e._createPrismaPromise((i) => {
-        var _a2;
         let o = t.customDataProxyFetch;
-        return "transaction" in t && i !== void 0 && (((_a2 = t.transaction) == null ? void 0 : _a2.kind) === "batch" && t.transaction.lock.then(), t.transaction = i), n === r.length ? e._executeRequest(t) : r[n]({ model: t.model, operation: t.model ? t.action : t.clientMethod, args: Qa(t.args ?? {}), __internalParams: t, query: (s, a = t) => {
+        return "transaction" in t && i !== void 0 && (t.transaction?.kind === "batch" && t.transaction.lock.then(), t.transaction = i), n === r.length ? e._executeRequest(t) : r[n]({ model: t.model, operation: t.model ? t.action : t.clientMethod, args: Qa(t.args ?? {}), __internalParams: t, query: (s, a = t) => {
           let l = a.customDataProxyFetch;
           return a.customDataProxyFetch = Ya(o, l), a.args = s, Ja(e, a, r, n + 1);
         } });
@@ -3947,8 +3897,7 @@ Learn how: https://pris.ly/d/${Za[t]}-build`;
     var om = "Cloudflare-Workers";
     var sm = "node";
     function tl() {
-      var _a2, _b, _c2;
-      return typeof Netlify == "object" ? "netlify" : typeof EdgeRuntime == "string" ? "edge-light" : ((_a2 = globalThis.navigator) == null ? void 0 : _a2.userAgent) === om ? "workerd" : globalThis.Deno ? "deno" : globalThis.__lagon__ ? "lagon" : ((_c2 = (_b = globalThis.process) == null ? void 0 : _b.release) == null ? void 0 : _c2.name) === sm ? "node" : globalThis.Bun ? "bun" : globalThis.fastly ? "fastly" : "unknown";
+      return typeof Netlify == "object" ? "netlify" : typeof EdgeRuntime == "string" ? "edge-light" : globalThis.navigator?.userAgent === om ? "workerd" : globalThis.Deno ? "deno" : globalThis.__lagon__ ? "lagon" : globalThis.process?.release?.name === sm ? "node" : globalThis.Bun ? "bun" : globalThis.fastly ? "fastly" : "unknown";
     }
     var am = { node: "Node.js", workerd: "Cloudflare Workers", deno: "Deno and Deno Deploy", netlify: "Netlify Edge Functions", "edge-light": "Edge Runtime (Vercel Edge Functions, Vercel Edge Middleware, Next.js (Pages Router) Edge API Routes, Next.js (App Router) Edge Route Handlers or Next.js Middleware)" };
     function kn() {
@@ -3992,7 +3941,7 @@ Please help us by answering a few questions: https://pris.ly/${e}`;
     }
     function Nn(e) {
       let { errorStack: t } = e;
-      return (t == null ? void 0 : t.match(/\/\.next|\/next@|\/next\//)) ? `
+      return t?.match(/\/\.next|\/next@|\/next\//) ? `
 
 We detected that you are using Next.js, learn how to fix this: https://pris.ly/d/engine-not-found-nextjs.` : "";
     }
@@ -4011,7 +3960,7 @@ ${et(e)}`;
       let { runtimeBinaryTarget: t, generatorBinaryTargets: r } = e, n = r.find((i) => i.native);
       return `${Xe(e)}
 
-This happened because Prisma Client was generated for "${(n == null ? void 0 : n.value) ?? "unknown"}", but the actual deployment required "${t}".
+This happened because Prisma Client was generated for "${n?.value ?? "unknown"}", but the actual deployment required "${t}".
 ${_n(e)}
 
 ${et(e)}`;
@@ -4030,17 +3979,15 @@ ${et(e)}`;
     var um = F("prisma:client:engines:resolveEnginePath");
     var cm = () => new RegExp("runtime[\\\\/]library\\.m?js$");
     async function al(e, t) {
-      var _a2;
       let r = { binary: process.env.PRISMA_QUERY_ENGINE_BINARY, library: process.env.PRISMA_QUERY_ENGINE_LIBRARY }[e] ?? t.prismaPath;
       if (r !== void 0) return r;
       let { enginePath: n, searchedLocations: i } = await pm(e, t);
       if (um("enginePath", n), n !== void 0 && e === "binary" && mi(n), n !== void 0) return t.prismaPath = n;
-      let o = await nt(), s = ((_a2 = t.generator) == null ? void 0 : _a2.binaryTargets) ?? [], a = s.some((d) => d.native), l = !s.some((d) => d.value === o), u = __filename.match(cm()) === null, c = { searchedLocations: i, generatorBinaryTargets: s, generator: t.generator, runtimeBinaryTarget: o, queryEngineName: ll(e, o), expectedLocation: br.default.relative(process.cwd(), t.dirname), errorStack: new Error().stack }, p;
+      let o = await nt(), s = t.generator?.binaryTargets ?? [], a = s.some((d) => d.native), l = !s.some((d) => d.value === o), u = __filename.match(cm()) === null, c = { searchedLocations: i, generatorBinaryTargets: s, generator: t.generator, runtimeBinaryTarget: o, queryEngineName: ll(e, o), expectedLocation: br.default.relative(process.cwd(), t.dirname), errorStack: new Error().stack }, p;
       throw a && l ? p = il(c) : l ? p = rl(c) : u ? p = nl(c) : p = ol(c), new T(p, t.clientVersion);
     }
     async function pm(engineType, config) {
-      var _a2, _b;
-      let binaryTarget = await nt(), searchedLocations = [], dirname = eval("__dirname"), searchLocations = [config.dirname, br.default.resolve(dirname, ".."), ((_b = (_a2 = config.generator) == null ? void 0 : _a2.output) == null ? void 0 : _b.value) ?? dirname, br.default.resolve(dirname, "../../../.prisma/client"), "/tmp/prisma-engines", config.cwd];
+      let binaryTarget = await nt(), searchedLocations = [], dirname = eval("__dirname"), searchLocations = [config.dirname, br.default.resolve(dirname, ".."), config.generator?.output?.value ?? dirname, br.default.resolve(dirname, "../../../.prisma/client"), "/tmp/prisma-engines", config.cwd];
       __filename.includes("resolveEnginePath") && searchLocations.push(is());
       for (let e of searchLocations) {
         let t = ll(engineType, binaryTarget), r = br.default.join(e, t);
@@ -4065,8 +4012,7 @@ ${et(e)}`;
       return (0, pl.default)({ user: t, repo: r, template: n, title: e, body: i });
     }
     function ml({ version: e, binaryTarget: t, title: r, description: n, engineVersion: i, database: o, query: s }) {
-      var _a2;
-      let a = No(6e3 - ((s == null ? void 0 : s.length) ?? 0)), l = cl((0, ro.default)(a)), u = n ? `# Description
+      let a = No(6e3 - (s?.length ?? 0)), l = cl((0, ro.default)(a)), u = n ? `# Description
 \`\`\`
 ${n}
 \`\`\`` : "", c = (0, ro.default)(`Hi Prisma Team! My Prisma Client just crashed. This is the report:
@@ -4074,11 +4020,11 @@ ${n}
 
 | Name            | Version            |
 |-----------------|--------------------|
-| Node            | ${(_a2 = process.version) == null ? void 0 : _a2.padEnd(19)}| 
-| OS              | ${t == null ? void 0 : t.padEnd(19)}|
-| Prisma Client   | ${e == null ? void 0 : e.padEnd(19)}|
-| Query Engine    | ${i == null ? void 0 : i.padEnd(19)}|
-| Database        | ${o == null ? void 0 : o.padEnd(19)}|
+| Node            | ${process.version?.padEnd(19)}| 
+| OS              | ${t?.padEnd(19)}|
+| Prisma Client   | ${e?.padEnd(19)}|
+| Query Engine    | ${i?.padEnd(19)}|
+| Database        | ${o?.padEnd(19)}|
 
 ${u}
 
@@ -4114,9 +4060,8 @@ how you used Prisma Client in the issue.
 `;
     }
     function Ft({ inlineDatasources: e, overrideDatasources: t, env: r, clientVersion: n }) {
-      var _a2, _b;
-      let i, o = Object.keys(e)[0], s = (_a2 = e[o]) == null ? void 0 : _a2.url, a = (_b = t[o]) == null ? void 0 : _b.url;
-      if (o === void 0 ? i = void 0 : a ? i = a : (s == null ? void 0 : s.value) ? i = s.value : (s == null ? void 0 : s.fromEnvVar) && (i = r[s.fromEnvVar]), (s == null ? void 0 : s.fromEnvVar) !== void 0 && i === void 0) throw new T(`error: Environment variable not found: ${s.fromEnvVar}.`, n);
+      let i, o = Object.keys(e)[0], s = e[o]?.url, a = t[o]?.url;
+      if (o === void 0 ? i = void 0 : a ? i = a : s?.value ? i = s.value : s?.fromEnvVar && (i = r[s.fromEnvVar]), s?.fromEnvVar !== void 0 && i === void 0) throw new T(`error: Environment variable not found: ${s.fromEnvVar}.`, n);
       if (i === void 0) throw new T("error: Missing URL environment variable, value, or override.", n);
       return i;
     }
@@ -4354,8 +4299,7 @@ how you used Prisma Client in the issue.
       return i == 1 ? (c = t[o], s = (c & 252) >> 2, a = (c & 3) << 4, r += qe[s] + qe[a] + "==") : i == 2 && (c = t[o] << 8 | t[o + 1], s = (c & 64512) >> 10, a = (c & 1008) >> 4, l = (c & 15) << 2, r += qe[s] + qe[a] + qe[l] + "="), r;
     }
     function hl(e) {
-      var _a2;
-      if (!!((_a2 = e.generator) == null ? void 0 : _a2.previewFeatures.some((r) => r.toLowerCase().includes("metrics")))) throw new T("The `metrics` preview feature is not yet available with Accelerate.\nPlease remove `metrics` from the `previewFeatures` in your schema.\n\nMore information about Accelerate: https://pris.ly/d/accelerate", e.clientVersion);
+      if (!!e.generator?.previewFeatures.some((r) => r.toLowerCase().includes("metrics"))) throw new T("The `metrics` preview feature is not yet available with Accelerate.\nPlease remove `metrics` from the `previewFeatures` in your schema.\n\nMore information about Accelerate: https://pris.ly/d/accelerate", e.clientVersion);
     }
     function gm(e) {
       return e[0] * 1e3 + e[1] / 1e6;
@@ -4388,7 +4332,7 @@ ${r}`, S(n, true));
       let r = yl["@prisma/engines-version"], n = t.clientVersion ?? "unknown";
       if (process.env.PRISMA_CLIENT_DATA_PROXY_CLIENT_VERSION) return process.env.PRISMA_CLIENT_DATA_PROXY_CLIENT_VERSION;
       if (e.includes("accelerate") && n !== "0.0.0" && n !== "in-memory") return n;
-      let [i, o] = (n == null ? void 0 : n.split("-")) ?? [];
+      let [i, o] = n?.split("-") ?? [];
       if (o === void 0 && ym.test(i)) return i;
       if (o !== void 0 || n === "0.0.0" || n === "in-memory") {
         if (e.startsWith("localhost") || e.startsWith("127.0.0.1")) return "0.0.0";
@@ -4450,8 +4394,7 @@ ${r}`, S(n, true));
       async stop() {
       }
       propagateResponseExtensions(t) {
-        var _a2, _b;
-        ((_a2 = t == null ? void 0 : t.logs) == null ? void 0 : _a2.length) && t.logs.forEach((r) => {
+        t?.logs?.length && t.logs.forEach((r) => {
           switch (r.level) {
             case "debug":
             case "trace":
@@ -4470,7 +4413,7 @@ ${r}`, S(n, true));
             default:
               r.level;
           }
-        }), ((_b = t == null ? void 0 : t.traces) == null ? void 0 : _b.length) && this.tracingHelper.dispatchEngineSpans(t.traces);
+        }), t?.traces?.length && this.tracingHelper.dispatchEngineSpans(t.traces);
       }
       onBeforeExit() {
         throw new Error('"beforeExit" hook is not applicable to the remote query engine');
@@ -4492,7 +4435,7 @@ ${r}`, S(n, true));
         return this.requestInternal({ body: t, traceparent: r, interactiveTransaction: n, customDataProxyFetch: i });
       }
       async requestBatch(t, { traceparent: r, transaction: n, customDataProxyFetch: i }) {
-        let o = (n == null ? void 0 : n.kind) === "itx" ? n.options : void 0, s = Dt(t, n);
+        let o = n?.kind === "itx" ? n.options : void 0, s = Dt(t, n);
         return (await this.requestInternal({ body: s, customDataProxyFetch: i, interactiveTransaction: o, traceparent: r })).map((l) => (l.extensions && this.propagateResponseExtensions(l.extensions), "errors" in l ? this.convertProtocolErrorsToClientError(l.errors) : l));
       }
       requestInternal({ body: t, traceparent: r, customDataProxyFetch: n, interactiveTransaction: i }) {
@@ -4573,7 +4516,7 @@ ${r}`, S(n, true));
       }
     };
     function xl(e) {
-      if ((e == null ? void 0 : e.kind) === "itx") return e.options.id;
+      if (e?.kind === "itx") return e.options.id;
     }
     var mo = _(require("os"));
     var Pl = _(require("path"));
@@ -4634,25 +4577,22 @@ ${r}`, S(n, true));
     }
     var Dr = class {
       constructor(t, r) {
-        var _a2;
         this.name = "LibraryEngine";
         this.libraryLoader = r ?? vl, t.engineWasm !== void 0 && (this.libraryLoader = r ?? Tl), this.config = t, this.libraryStarted = false, this.logQueries = t.logQueries ?? false, this.logLevel = t.logLevel ?? "error", this.logEmitter = t.logEmitter, this.datamodel = t.inlineSchema, this.tracingHelper = t.tracingHelper, t.enableDebugLogs && (this.logLevel = "debug");
-        let n = Object.keys(t.overrideDatasources)[0], i = (_a2 = t.overrideDatasources[n]) == null ? void 0 : _a2.url;
+        let n = Object.keys(t.overrideDatasources)[0], i = t.overrideDatasources[n]?.url;
         n !== void 0 && i !== void 0 && (this.datasourceOverrides = { [n]: i }), this.libraryInstantiationPromise = this.instantiateLibrary();
       }
       wrapEngine(t) {
-        var _a2, _b, _c2;
-        return { applyPendingMigrations: (_a2 = t.applyPendingMigrations) == null ? void 0 : _a2.bind(t), commitTransaction: this.withRequestId(t.commitTransaction.bind(t)), connect: this.withRequestId(t.connect.bind(t)), disconnect: this.withRequestId(t.disconnect.bind(t)), metrics: (_b = t.metrics) == null ? void 0 : _b.bind(t), query: this.withRequestId(t.query.bind(t)), rollbackTransaction: this.withRequestId(t.rollbackTransaction.bind(t)), sdlSchema: (_c2 = t.sdlSchema) == null ? void 0 : _c2.bind(t), startTransaction: this.withRequestId(t.startTransaction.bind(t)), trace: t.trace.bind(t) };
+        return { applyPendingMigrations: t.applyPendingMigrations?.bind(t), commitTransaction: this.withRequestId(t.commitTransaction.bind(t)), connect: this.withRequestId(t.connect.bind(t)), disconnect: this.withRequestId(t.disconnect.bind(t)), metrics: t.metrics?.bind(t), query: this.withRequestId(t.query.bind(t)), rollbackTransaction: this.withRequestId(t.rollbackTransaction.bind(t)), sdlSchema: t.sdlSchema?.bind(t), startTransaction: this.withRequestId(t.startTransaction.bind(t)), trace: t.trace.bind(t) };
       }
       withRequestId(t) {
         return async (...r) => {
-          var _a2;
           let n = Cm().toString();
           try {
             return await t(...r, n);
           } finally {
             if (this.tracingHelper.isEnabled()) {
-              let i = await ((_a2 = this.engine) == null ? void 0 : _a2.trace(n));
+              let i = await this.engine?.trace(n);
               if (i) {
                 let o = JSON.parse(i);
                 this.tracingHelper.dispatchEngineSpans(o.spans);
@@ -4665,13 +4605,12 @@ ${r}`, S(n, true));
         throw new Error("Cannot call this method from this type of engine instance");
       }
       async transaction(t, r, n) {
-        var _a2, _b, _c2;
         await this.start();
         let i = JSON.stringify(r), o;
         if (t === "start") {
           let a = JSON.stringify({ max_wait: n.maxWait, timeout: n.timeout, isolation_level: n.isolationLevel });
-          o = await ((_a2 = this.engine) == null ? void 0 : _a2.startTransaction(a, i));
-        } else t === "commit" ? o = await ((_b = this.engine) == null ? void 0 : _b.commitTransaction(n.id, i)) : t === "rollback" && (o = await ((_c2 = this.engine) == null ? void 0 : _c2.rollbackTransaction(n.id, i)));
+          o = await this.engine?.startTransaction(a, i);
+        } else t === "commit" ? o = await this.engine?.commitTransaction(n.id, i) : t === "rollback" && (o = await this.engine?.rollbackTransaction(n.id, i));
         let s = this.parseEngineResponse(o);
         if (Sm(s)) {
           let a = this.getExternalAdapterError(s);
@@ -4706,8 +4645,7 @@ You may have to run ${Ve("prisma generate")} for your changes to take effect.`, 
           try {
             let t = new WeakRef(this), { adapter: r } = this.config;
             r && Ie("Using driver adapter: %O", r), this.engine = this.wrapEngine(new this.QueryEngineConstructor({ datamodel: this.datamodel, env: process.env, logQueries: this.config.logQueries ?? false, ignoreEnvVarErrors: true, datasourceOverrides: this.datasourceOverrides ?? {}, logLevel: this.logLevel, configDir: this.config.cwd, engineProtocol: "json", enableTracing: this.tracingHelper.isEnabled() }, (n) => {
-              var _a2;
-              (_a2 = t.deref()) == null ? void 0 : _a2.logger(n);
+              t.deref()?.logger(n);
             }, r));
           } catch (t) {
             let r = t, n = this.parseInitError(r.message);
@@ -4717,7 +4655,7 @@ You may have to run ${Ve("prisma generate")} for your changes to take effect.`, 
       }
       logger(t) {
         let r = this.parseEngineResponse(t);
-        r && (r.level = (r == null ? void 0 : r.level.toLowerCase()) ?? "unknown", vm(r) ? this.logEmitter.emit("query", { timestamp: /* @__PURE__ */ new Date(), query: r.query, params: r.params, duration: Number(r.duration_ms), target: r.module_path }) : Tm(r) ? this.loggerRustPanic = new ce(ho(this, `${r.message}: ${r.reason} in ${r.file}:${r.line}:${r.column}`), this.config.clientVersion) : this.logEmitter.emit(r.level, { timestamp: /* @__PURE__ */ new Date(), message: r.message, target: r.module_path }));
+        r && (r.level = r?.level.toLowerCase() ?? "unknown", vm(r) ? this.logEmitter.emit("query", { timestamp: /* @__PURE__ */ new Date(), query: r.query, params: r.params, duration: Number(r.duration_ms), target: r.module_path }) : Tm(r) ? this.loggerRustPanic = new ce(ho(this, `${r.message}: ${r.reason} in ${r.file}:${r.line}:${r.column}`), this.config.clientVersion) : this.logEmitter.emit(r.level, { timestamp: /* @__PURE__ */ new Date(), message: r.message, target: r.module_path }));
       }
       parseInitError(t) {
         try {
@@ -4740,11 +4678,10 @@ You may have to run ${Ve("prisma generate")} for your changes to take effect.`, 
         if (await this.libraryInstantiationPromise, await this.libraryStoppingPromise, this.libraryStartingPromise) return Ie(`library already starting, this.libraryStarted: ${this.libraryStarted}`), this.libraryStartingPromise;
         if (this.libraryStarted) return;
         let t = async () => {
-          var _a2;
           Ie("library starting");
           try {
             let r = { traceparent: this.tracingHelper.getTraceParent() };
-            await ((_a2 = this.engine) == null ? void 0 : _a2.connect(JSON.stringify(r))), this.libraryStarted = true, Ie("library started");
+            await this.engine?.connect(JSON.stringify(r)), this.libraryStarted = true, Ie("library started");
           } catch (r) {
             let n = this.parseInitError(r.message);
             throw typeof n == "string" ? r : new T(n.message, this.config.clientVersion, n.error_code);
@@ -4758,34 +4695,30 @@ You may have to run ${Ve("prisma generate")} for your changes to take effect.`, 
         if (await this.libraryStartingPromise, await this.executingQueryPromise, this.libraryStoppingPromise) return Ie("library is already stopping"), this.libraryStoppingPromise;
         if (!this.libraryStarted) return;
         let t = async () => {
-          var _a2;
           await new Promise((n) => setTimeout(n, 5)), Ie("library stopping");
           let r = { traceparent: this.tracingHelper.getTraceParent() };
-          await ((_a2 = this.engine) == null ? void 0 : _a2.disconnect(JSON.stringify(r))), this.libraryStarted = false, this.libraryStoppingPromise = void 0, Ie("library stopped");
+          await this.engine?.disconnect(JSON.stringify(r)), this.libraryStarted = false, this.libraryStoppingPromise = void 0, Ie("library stopped");
         };
         return this.libraryStoppingPromise = this.tracingHelper.runInChildSpan("disconnect", t), this.libraryStoppingPromise;
       }
       version() {
-        var _a2, _b;
-        return this.versionInfo = (_a2 = this.library) == null ? void 0 : _a2.version(), ((_b = this.versionInfo) == null ? void 0 : _b.version) ?? "unknown";
+        return this.versionInfo = this.library?.version(), this.versionInfo?.version ?? "unknown";
       }
       debugPanic(t) {
-        var _a2;
-        return (_a2 = this.library) == null ? void 0 : _a2.debugPanic(t);
+        return this.library?.debugPanic(t);
       }
       async request(t, { traceparent: r, interactiveTransaction: n }) {
-        var _a2, _b;
         Ie(`sending request, this.libraryStarted: ${this.libraryStarted}`);
         let i = JSON.stringify({ traceparent: r }), o = JSON.stringify(t);
         try {
-          await this.start(), this.executingQueryPromise = (_a2 = this.engine) == null ? void 0 : _a2.query(o, i, n == null ? void 0 : n.id), this.lastQuery = o;
+          await this.start(), this.executingQueryPromise = this.engine?.query(o, i, n?.id), this.lastQuery = o;
           let s = this.parseEngineResponse(await this.executingQueryPromise);
           if (s.errors) throw s.errors.length === 1 ? this.buildQueryError(s.errors[0]) : new B(JSON.stringify(s.errors), { clientVersion: this.config.clientVersion });
           if (this.loggerRustPanic) throw this.loggerRustPanic;
           return { data: s };
         } catch (s) {
           if (s instanceof T) throw s;
-          if (s.code === "GenericFailure" && ((_b = s.message) == null ? void 0 : _b.startsWith("PANIC:"))) throw new ce(ho(this, s.message), this.config.clientVersion);
+          if (s.code === "GenericFailure" && s.message?.startsWith("PANIC:")) throw new ce(ho(this, s.message), this.config.clientVersion);
           let a = this.parseRequestError(s.message);
           throw typeof a == "string" ? s : new B(`${a.message}
 ${a.backtrace}`, { clientVersion: this.config.clientVersion });
@@ -4807,9 +4740,8 @@ ${a.backtrace}`, { clientVersion: this.config.clientVersion });
         return r ? r.error : Nt(t, this.config.clientVersion, this.config.activeProvider);
       }
       getExternalAdapterError(t) {
-        var _a2;
         if (t.error_code === Pm && this.config.adapter) {
-          let r = (_a2 = t.meta) == null ? void 0 : _a2.id;
+          let r = t.meta?.id;
           zr(typeof r == "number", "Malformed external JS error received from the engine");
           let n = this.config.adapter.errorRegistry.consumeError(r);
           return zr(n, "External error with reported id was not registered"), n;
@@ -4825,8 +4757,7 @@ ${a.backtrace}`, { clientVersion: this.config.clientVersion });
       return typeof e == "object" && e !== null && e.error_code !== void 0;
     }
     function ho(e, t) {
-      var _a2;
-      return ml({ binaryTarget: e.binaryTarget, title: t, version: e.config.clientVersion, engineVersion: (_a2 = e.versionInfo) == null ? void 0 : _a2.commit, database: e.config.activeProvider, query: e.lastQuery });
+      return ml({ binaryTarget: e.binaryTarget, title: t, version: e.config.clientVersion, engineVersion: e.versionInfo?.commit, database: e.config.activeProvider, query: e.lastQuery });
     }
     function Cl({ copyEngine: e = true }, t) {
       let r;
@@ -4834,12 +4765,12 @@ ${a.backtrace}`, { clientVersion: this.config.clientVersion });
         r = Ft({ inlineDatasources: t.inlineDatasources, overrideDatasources: t.overrideDatasources, env: { ...t.env, ...process.env }, clientVersion: t.clientVersion });
       } catch {
       }
-      let n = !!((r == null ? void 0 : r.startsWith("prisma://")) || wi(r));
+      let n = !!(r?.startsWith("prisma://") || wi(r));
       e && n && tr("recommend--no-engine", "In production, we recommend using `prisma generate --no-engine` (See: `prisma generate --help`)");
       let i = ht(t.generator), o = n || !e, s = !!t.adapter, a = i === "library", l = i === "binary", u = i === "client";
       if (o && s || s && false) {
         let c;
-        throw e ? (r == null ? void 0 : r.startsWith("prisma://")) ? c = ["Prisma Client was configured to use the `adapter` option but the URL was a `prisma://` URL.", "Please either use the `prisma://` URL or remove the `adapter` from the Prisma Client constructor."] : c = ["Prisma Client was configured to use both the `adapter` and Accelerate, please chose one."] : c = ["Prisma Client was configured to use the `adapter` option but `prisma generate` was run with `--no-engine`.", "Please run `prisma generate` without `--no-engine` to be able to use Prisma Client with the adapter."], new te(c.join(`
+        throw e ? r?.startsWith("prisma://") ? c = ["Prisma Client was configured to use the `adapter` option but the URL was a `prisma://` URL.", "Please either use the `prisma://` URL or remove the `adapter` from the Prisma Client constructor."] : c = ["Prisma Client was configured to use both the `adapter` and Accelerate, please chose one."] : c = ["Prisma Client was configured to use the `adapter` option but `prisma generate` was run with `--no-engine`.", "Please run `prisma generate` without `--no-engine` to be able to use Prisma Client with the adapter."], new te(c.join(`
 `), { clientVersion: t.clientVersion });
       }
       if (o) return new _r(t);
@@ -4847,7 +4778,7 @@ ${a.backtrace}`, { clientVersion: this.config.clientVersion });
       throw new te("Invalid client engine type, please use `library` or `binary`", { clientVersion: t.clientVersion });
     }
     function Mn({ generator: e }) {
-      return (e == null ? void 0 : e.previewFeatures) ?? [];
+      return e?.previewFeatures ?? [];
     }
     var Sl = (e) => ({ command: e });
     var Al = (e) => e.strings.reduce((t, r, n) => `${t}@P${n}${r}`);
@@ -4927,7 +4858,7 @@ More Information: https://pris.ly/d/execute-raw
         default:
           throw new Error(`The ${t} provider does not support ${e}`);
       }
-      return (i == null ? void 0 : i.values) ? Nl(`prisma.${e}(${n}, ${i.values})`) : Nl(`prisma.${e}(${n})`), { query: n, parameters: i };
+      return i?.values ? Nl(`prisma.${e}(${n}, ${i.values})`) : Nl(`prisma.${e}(${n})`), { query: n, parameters: i };
     };
     var Ll = { requestArgsToMiddlewareArgs(e) {
       return [e.strings, ...e.values];
@@ -4944,7 +4875,7 @@ More Information: https://pris.ly/d/execute-raw
       return function(r, n) {
         let i, o = (s = e) => {
           try {
-            return s === void 0 || (s == null ? void 0 : s.kind) === "itx" ? i ??= Ml(r(s)) : Ml(r(s));
+            return s === void 0 || s?.kind === "itx" ? i ??= Ml(r(s)) : Ml(r(s));
           } catch (a) {
             return Promise.reject(a);
           }
@@ -4992,8 +4923,7 @@ More Information: https://pris.ly/d/execute-raw
         return this.getGlobalTracingHelper().runInChildSpan(t, r);
       }
       getGlobalTracingHelper() {
-        var _a2;
-        return ((_a2 = globalThis.PRISMA_INSTRUMENTATION) == null ? void 0 : _a2.helper) ?? km;
+        return globalThis.PRISMA_INSTRUMENTATION?.helper ?? km;
       }
     };
     function $l() {
@@ -5003,7 +4933,7 @@ More Information: https://pris.ly/d/execute-raw
     }) {
       let r, n = new Promise((i) => r = i);
       return { then(i) {
-        return --e === 0 && r(t()), i == null ? void 0 : i(n);
+        return --e === 0 && r(t()), i?.(n);
       } };
     }
     function Vl(e) {
@@ -5144,15 +5074,10 @@ More Information: https://pris.ly/d/execute-raw
             }
           });
         }), singleLoader: async (n) => {
-          var _a2;
-          let i = ((_a2 = n.transaction) == null ? void 0 : _a2.kind) === "itx" ? Ul(n.transaction) : void 0, o = await this.client._engine.request(n.protocolQuery, { traceparent: this.client._tracingHelper.getTraceParent(), interactiveTransaction: i, isWrite: Po(n.protocolQuery.action), customDataProxyFetch: n.customDataProxyFetch });
+          let i = n.transaction?.kind === "itx" ? Ul(n.transaction) : void 0, o = await this.client._engine.request(n.protocolQuery, { traceparent: this.client._tracingHelper.getTraceParent(), interactiveTransaction: i, isWrite: Po(n.protocolQuery.action), customDataProxyFetch: n.customDataProxyFetch });
           return this.mapQueryEngineResult(n, o);
-        }, batchBy: (n) => {
-          var _a2;
-          return ((_a2 = n.transaction) == null ? void 0 : _a2.id) ? `transaction-${n.transaction.id}` : jl(n.protocolQuery);
-        }, batchOrder(n, i) {
-          var _a2, _b;
-          return ((_a2 = n.transaction) == null ? void 0 : _a2.kind) === "batch" && ((_b = i.transaction) == null ? void 0 : _b.kind) === "batch" ? n.transaction.index - i.transaction.index : 0;
+        }, batchBy: (n) => n.transaction?.id ? `transaction-${n.transaction.id}` : jl(n.protocolQuery), batchOrder(n, i) {
+          return n.transaction?.kind === "batch" && i.transaction?.kind === "batch" ? n.transaction.index - i.transaction.index : 0;
         } });
       }
       async request(t) {
@@ -5164,7 +5089,7 @@ More Information: https://pris.ly/d/execute-raw
         }
       }
       mapQueryEngineResult({ dataPath: t, unpacker: r }, n) {
-        let i = n == null ? void 0 : n.data, o = this.unpack(i, t, r);
+        let i = n?.data, o = this.unpack(i, t, r);
         return process.env.PRISMA_CLIENT_GET_TIME ? { data: o } : o;
       }
       handleAndLogRequestError(t) {
@@ -5215,7 +5140,7 @@ More Information: https://pris.ly/d/execute-raw
       return { id: e.id, payload: e.payload };
     }
     function Fm(e, t) {
-      return qn(e) && (t == null ? void 0 : t.kind) === "batch" && e.batchRequestIdx !== t.index;
+      return qn(e) && t?.kind === "batch" && e.batchRequestIdx !== t.index;
     }
     function Mm(e) {
       return e.code === "P2009" || e.code === "P2012";
@@ -5369,20 +5294,19 @@ Expected string or undefined.`);
       if (r) return e[r];
     }
     function Bm(e, t) {
-      var _a2, _b, _c2, _d2;
       let r = It(e);
       for (let o of t) switch (o.kind) {
         case "UnknownModel":
-          (_a2 = r.arguments.getField(o.modelKey)) == null ? void 0 : _a2.markAsError(), r.addErrorMessage(() => `Unknown model name: ${o.modelKey}.`);
+          r.arguments.getField(o.modelKey)?.markAsError(), r.addErrorMessage(() => `Unknown model name: ${o.modelKey}.`);
           break;
         case "UnknownField":
-          (_b = r.arguments.getDeepField([o.modelKey, o.fieldName])) == null ? void 0 : _b.markAsError(), r.addErrorMessage(() => `Model "${o.modelKey}" does not have a field named "${o.fieldName}".`);
+          r.arguments.getDeepField([o.modelKey, o.fieldName])?.markAsError(), r.addErrorMessage(() => `Model "${o.modelKey}" does not have a field named "${o.fieldName}".`);
           break;
         case "RelationInOmit":
-          (_c2 = r.arguments.getDeepField([o.modelKey, o.fieldName])) == null ? void 0 : _c2.markAsError(), r.addErrorMessage(() => 'Relations are already excluded by default and can not be specified in "omit".');
+          r.arguments.getDeepField([o.modelKey, o.fieldName])?.markAsError(), r.addErrorMessage(() => 'Relations are already excluded by default and can not be specified in "omit".');
           break;
         case "InvalidFieldValue":
-          (_d2 = r.arguments.getDeepFieldValue([o.modelKey, o.fieldName])) == null ? void 0 : _d2.markAsError(), r.addErrorMessage(() => "Omit field option value must be a boolean.");
+          r.arguments.getDeepFieldValue([o.modelKey, o.fieldName])?.markAsError(), r.addErrorMessage(() => "Omit field option value must be a boolean.");
           break;
       }
       let { message: n, args: i } = wn(r, "colorless");
@@ -5420,30 +5344,29 @@ ${n}`;
     function ou(e) {
       class t {
         constructor(n) {
-          var _a2, _b, _c2, _d2, _e2, _f;
           this._originalClient = this;
           this._middlewares = new $n();
           this._createPrismaPromise = bo();
           this.$extends = Va;
-          e = ((_b = (_a2 = n == null ? void 0 : n.__internal) == null ? void 0 : _a2.configOverride) == null ? void 0 : _b.call(_a2, e)) ?? e, Xa(e), n && Zl(n, e);
+          e = n?.__internal?.configOverride?.(e) ?? e, Xa(e), n && Zl(n, e);
           let i = new nu.EventEmitter().on("error", () => {
           });
-          this._extensions = Ot.empty(), this._previewFeatures = Mn(e), this._clientVersion = e.clientVersion ?? Jl, this._activeProvider = e.activeProvider, this._globalOmit = n == null ? void 0 : n.omit, this._tracingHelper = $l();
+          this._extensions = Ot.empty(), this._previewFeatures = Mn(e), this._clientVersion = e.clientVersion ?? Jl, this._activeProvider = e.activeProvider, this._globalOmit = n?.omit, this._tracingHelper = $l();
           let o = { rootEnvPath: e.relativeEnvPaths.rootEnvPath && Nr.default.resolve(e.dirname, e.relativeEnvPaths.rootEnvPath), schemaEnvPath: e.relativeEnvPaths.schemaEnvPath && Nr.default.resolve(e.dirname, e.relativeEnvPaths.schemaEnvPath) }, s;
-          if (n == null ? void 0 : n.adapter) {
+          if (n?.adapter) {
             s = Wi(n.adapter);
             let l = e.activeProvider === "postgresql" ? "postgres" : e.activeProvider;
             if (s.provider !== l) throw new T(`The Driver Adapter \`${s.adapterName}\`, based on \`${s.provider}\`, is not compatible with the provider \`${l}\` specified in the Prisma schema.`, this._clientVersion);
             if (n.datasources || n.datasourceUrl !== void 0) throw new T("Custom datasource configuration is not compatible with Prisma Driver Adapters. Please define the database connection string directly in the Driver Adapter configuration.", this._clientVersion);
           }
-          let a = !s && Yt(o, { conflictCheck: "none" }) || ((_c2 = e.injectableEdgeEnv) == null ? void 0 : _c2.call(e));
+          let a = !s && Yt(o, { conflictCheck: "none" }) || e.injectableEdgeEnv?.();
           try {
             let l = n ?? {}, u = l.__internal ?? {}, c = u.debug === true;
             c && F.enable("prisma:client");
             let p = Nr.default.resolve(e.dirname, e.relativePath);
             iu.default.existsSync(p) || (p = e.dirname), tt("dirname", e.dirname), tt("relativePath", e.relativePath), tt("cwd", p);
             let d = u.engine || {};
-            if (l.errorFormat ? this._errorFormat = l.errorFormat : process.env.NODE_ENV === "production" ? this._errorFormat = "minimal" : process.env.NO_COLOR ? this._errorFormat = "colorless" : this._errorFormat = "colorless", this._runtimeDataModel = e.runtimeDataModel, this._engineConfig = { cwd: p, dirname: e.dirname, enableDebugLogs: c, allowTriggerPanic: d.allowTriggerPanic, datamodelPath: Nr.default.join(e.dirname, e.filename ?? "schema.prisma"), prismaPath: d.binaryPath ?? void 0, engineEndpoint: d.endpoint, generator: e.generator, showColors: this._errorFormat === "pretty", logLevel: l.log && Vl(l.log), logQueries: l.log && !!(typeof l.log == "string" ? l.log === "query" : l.log.find((f) => typeof f == "string" ? f === "query" : f.level === "query")), env: (a == null ? void 0 : a.parsed) ?? {}, flags: [], engineWasm: e.engineWasm, compilerWasm: e.compilerWasm, clientVersion: e.clientVersion, engineVersion: e.engineVersion, previewFeatures: this._previewFeatures, activeProvider: e.activeProvider, inlineSchema: e.inlineSchema, overrideDatasources: el(l, e.datasourceNames), inlineDatasources: e.inlineDatasources, inlineSchemaHash: e.inlineSchemaHash, tracingHelper: this._tracingHelper, transactionOptions: { maxWait: ((_d2 = l.transactionOptions) == null ? void 0 : _d2.maxWait) ?? 2e3, timeout: ((_e2 = l.transactionOptions) == null ? void 0 : _e2.timeout) ?? 5e3, isolationLevel: (_f = l.transactionOptions) == null ? void 0 : _f.isolationLevel }, logEmitter: i, isBundled: e.isBundled, adapter: s }, this._accelerateEngineConfig = { ...this._engineConfig, accelerateUtils: { resolveDatasourceUrl: Ft, getBatchRequestPayload: Dt, prismaGraphQLToJSError: Nt, PrismaClientUnknownRequestError: B, PrismaClientInitializationError: T, PrismaClientKnownRequestError: ee, debug: F("prisma:client:accelerateEngine"), engineVersion: tu.version, clientVersion: e.clientVersion } }, tt("clientVersion", e.clientVersion), this._engine = Cl(e, this._engineConfig), this._requestHandler = new Bn(this, i), l.log) for (let f of l.log) {
+            if (l.errorFormat ? this._errorFormat = l.errorFormat : process.env.NODE_ENV === "production" ? this._errorFormat = "minimal" : process.env.NO_COLOR ? this._errorFormat = "colorless" : this._errorFormat = "colorless", this._runtimeDataModel = e.runtimeDataModel, this._engineConfig = { cwd: p, dirname: e.dirname, enableDebugLogs: c, allowTriggerPanic: d.allowTriggerPanic, datamodelPath: Nr.default.join(e.dirname, e.filename ?? "schema.prisma"), prismaPath: d.binaryPath ?? void 0, engineEndpoint: d.endpoint, generator: e.generator, showColors: this._errorFormat === "pretty", logLevel: l.log && Vl(l.log), logQueries: l.log && !!(typeof l.log == "string" ? l.log === "query" : l.log.find((f) => typeof f == "string" ? f === "query" : f.level === "query")), env: a?.parsed ?? {}, flags: [], engineWasm: e.engineWasm, compilerWasm: e.compilerWasm, clientVersion: e.clientVersion, engineVersion: e.engineVersion, previewFeatures: this._previewFeatures, activeProvider: e.activeProvider, inlineSchema: e.inlineSchema, overrideDatasources: el(l, e.datasourceNames), inlineDatasources: e.inlineDatasources, inlineSchemaHash: e.inlineSchemaHash, tracingHelper: this._tracingHelper, transactionOptions: { maxWait: l.transactionOptions?.maxWait ?? 2e3, timeout: l.transactionOptions?.timeout ?? 5e3, isolationLevel: l.transactionOptions?.isolationLevel }, logEmitter: i, isBundled: e.isBundled, adapter: s }, this._accelerateEngineConfig = { ...this._engineConfig, accelerateUtils: { resolveDatasourceUrl: Ft, getBatchRequestPayload: Dt, prismaGraphQLToJSError: Nt, PrismaClientUnknownRequestError: B, PrismaClientInitializationError: T, PrismaClientKnownRequestError: ee, debug: F("prisma:client:accelerateEngine"), engineVersion: tu.version, clientVersion: e.clientVersion } }, tt("clientVersion", e.clientVersion), this._engine = Cl(e, this._engineConfig), this._requestHandler = new Bn(this, i), l.log) for (let f of l.log) {
               let g = typeof f == "string" ? f : f.emit === "stdout" ? f.level : null;
               g && this.$on(g, (h) => {
                 er.log(`${er.tags[g] ?? ""}`, h.message || h.query);
@@ -5521,15 +5444,14 @@ ${n}`;
         }
         _transactionWithArray({ promises: n, options: i }) {
           let o = Gm.nextId(), s = ql(n.length), a = n.map((l, u) => {
-            var _a2;
-            if ((l == null ? void 0 : l[Symbol.toStringTag]) !== "PrismaPromise") throw new Error("All elements of the array need to be Prisma Client promises. Hint: Please make sure you are not awaiting the Prisma client calls you intended to pass in the $transaction function.");
-            let c = (i == null ? void 0 : i.isolationLevel) ?? this._engineConfig.transactionOptions.isolationLevel, p = { kind: "batch", id: o, index: u, isolationLevel: c, lock: s };
-            return ((_a2 = l.requestTransaction) == null ? void 0 : _a2.call(l, p)) ?? l;
+            if (l?.[Symbol.toStringTag] !== "PrismaPromise") throw new Error("All elements of the array need to be Prisma Client promises. Hint: Please make sure you are not awaiting the Prisma client calls you intended to pass in the $transaction function.");
+            let c = i?.isolationLevel ?? this._engineConfig.transactionOptions.isolationLevel, p = { kind: "batch", id: o, index: u, isolationLevel: c, lock: s };
+            return l.requestTransaction?.(p) ?? l;
           });
           return Xl(a);
         }
         async _transactionWithCallback({ callback: n, options: i }) {
-          let o = { traceparent: this._tracingHelper.getTraceParent() }, s = { maxWait: (i == null ? void 0 : i.maxWait) ?? this._engineConfig.transactionOptions.maxWait, timeout: (i == null ? void 0 : i.timeout) ?? this._engineConfig.transactionOptions.timeout, isolationLevel: (i == null ? void 0 : i.isolationLevel) ?? this._engineConfig.transactionOptions.isolationLevel }, a = await this._engine.transaction("start", o, s), l;
+          let o = { traceparent: this._tracingHelper.getTraceParent() }, s = { maxWait: i?.maxWait ?? this._engineConfig.transactionOptions.maxWait, timeout: i?.timeout ?? this._engineConfig.transactionOptions.timeout, isolationLevel: i?.isolationLevel ?? this._engineConfig.transactionOptions.isolationLevel }, a = await this._engine.transaction("start", o, s), l;
           try {
             let u = { kind: "itx", ...a };
             l = await n(this._createItxClient(u)), await this._engine.transaction("commit", o, a);
@@ -5543,9 +5465,8 @@ ${n}`;
           return yr(Ae(qa(this), [ie("_appliedParent", () => this._appliedParent._createItxClient(n)), ie("_createPrismaPromise", () => bo(n)), ie(Qm, () => n.id), _t(Dl)]));
         }
         $transaction(n, i) {
-          var _a2;
           let o;
-          typeof n == "function" ? ((_a2 = this._engineConfig.adapter) == null ? void 0 : _a2.adapterName) === "@prisma/adapter-d1" ? o = () => {
+          typeof n == "function" ? this._engineConfig.adapter?.adapterName === "@prisma/adapter-d1" ? o = () => {
             throw new Error("Cloudflare D1 does not support interactive transactions. We recommend you to refactor your queries with that limitation in mind, and use batch transactions with `prisma.$transactions([])` where applicable.");
           } : o = () => this._transactionWithCallback({ callback: n, options: i }) : o = () => this._transactionWithArray({ promises: n, options: i });
           let s = { name: "transaction", attributes: { method: "$transaction" } };
@@ -5555,7 +5476,7 @@ ${n}`;
           n.otelParentCtx = this._tracingHelper.getActiveContext();
           let i = n.middlewareArgsMapper ?? Um, o = { args: i.requestArgsToMiddlewareArgs(n.args), dataPath: n.dataPath, runInTransaction: !!n.transaction, action: n.action, model: n.model }, s = { middleware: { name: "middleware", middleware: true, attributes: { method: "$use" }, active: false }, operation: { name: "operation", attributes: { method: o.action, model: o.model, name: o.model ? `${o.model}.${o.action}` : o.action } } }, a = -1, l = async (u) => {
             let c = this._middlewares.get(++a);
-            if (c) return this._tracingHelper.runInChildSpan(s.middleware, (O) => c(u, (v) => (O == null ? void 0 : O.end(), l(v))));
+            if (c) return this._tracingHelper.runInChildSpan(s.middleware, (O) => c(u, (v) => (O?.end(), l(v))));
             let { runInTransaction: p, args: d, ...f } = u, g = { ...n, ...f };
             d && (g.args = i.middlewareArgsToRequestArgs(d)), n.transaction !== void 0 && p === false && delete g.transaction;
             let h = await Wa(this, g);
@@ -5568,7 +5489,7 @@ ${n}`;
             n = u ? u(n) : n;
             let g = { name: "serialize" }, h = this._tracingHelper.runInChildSpan(g, () => Rn({ modelName: l, runtimeDataModel: this._runtimeDataModel, action: a, args: n, clientMethod: i, callsite: s, extensions: this._extensions, errorFormat: this._errorFormat, clientVersion: this._clientVersion, previewFeatures: this._previewFeatures, globalOmit: this._globalOmit }));
             return F.enabled("prisma:client") && (tt("Prisma Client call:"), tt(`prisma.${i}(${Aa(n)})`), tt("Generated request:"), tt(JSON.stringify(h, null, 2) + `
-`)), (c == null ? void 0 : c.kind) === "batch" && await c.lock, this._requestHandler.request({ protocolQuery: h, modelName: l, action: a, clientMethod: i, dataPath: o, callsite: s, args: n, extensions: this._extensions, transaction: c, unpacker: p, otelParentCtx: d, otelChildCtx: this._tracingHelper.getActiveContext(), globalOmit: this._globalOmit, customDataProxyFetch: f });
+`)), c?.kind === "batch" && await c.lock, this._requestHandler.request({ protocolQuery: h, modelName: l, action: a, clientMethod: i, dataPath: o, callsite: s, args: n, extensions: this._extensions, transaction: c, unpacker: p, otelParentCtx: d, otelChildCtx: this._tracingHelper.getActiveContext(), globalOmit: this._globalOmit, customDataProxyFetch: f });
           } catch (g) {
             throw g.clientVersion = this._clientVersion, g;
           }
@@ -5578,8 +5499,7 @@ ${n}`;
           return this._metrics;
         }
         _hasPreviewFlag(n) {
-          var _a2;
-          return !!((_a2 = this._engineConfig.previewFeatures) == null ? void 0 : _a2.includes(n));
+          return !!this._engineConfig.previewFeatures?.includes(n);
         }
         $applyPendingMigrations() {
           return this._engine.applyPendingMigrations();

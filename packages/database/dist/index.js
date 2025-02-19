@@ -29,6 +29,7 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
   isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target,
   mod
 ));
+var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
 // generated/client/runtime/library.js
 var require_library = __commonJS({
@@ -5690,6 +5691,13 @@ var require_client = __commonJS({
   }
 });
 
+// src/index.ts
+var index_exports = {};
+__export(index_exports, {
+  prisma: () => prisma
+});
+module.exports = __toCommonJS(index_exports);
+
 // src/client.ts
 var client_exports = {};
 __export(client_exports, {
@@ -5701,38 +5709,12 @@ var globalForPrisma = global;
 var prisma = globalForPrisma.prisma || new import_client.PrismaClient();
 if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
 
-// src/seed.ts
-var DEFAULT_USERS = [
-  // Add your own user to pre-populate the database with
-  {
-    name: "Tim Apple",
-    email: "tim@apple.com"
-  }
-];
-(async () => {
-  try {
-    await Promise.all(
-      DEFAULT_USERS.map(
-        (user) => prisma.user.upsert({
-          where: {
-            email: user.email
-          },
-          update: {
-            ...user
-          },
-          create: {
-            ...user
-          }
-        })
-      )
-    );
-  } catch (error) {
-    console.error(error);
-    process.exit(1);
-  } finally {
-    await prisma.$disconnect();
-  }
-})();
+// src/index.ts
+__reExport(index_exports, __toESM(require_client()), module.exports);
+// Annotate the CommonJS export names for ESM import in node:
+0 && (module.exports = {
+  prisma
+});
 /*! Bundled license information:
 
 decimal.js/decimal.mjs:
