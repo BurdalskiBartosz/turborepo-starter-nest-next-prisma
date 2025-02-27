@@ -1,10 +1,18 @@
 {
-  "extends": "@repo/config-typescript/base.json",
   "compilerOptions": {
+    "target": "ES2019",
     "lib": ["ES2019"],
+    "module": "CommonJS", // lub ESNext, jeśli używasz ESM
+    "moduleResolution": "node",
     "outDir": "./dist",
-    "rootDir": "./src"
+    "rootDir": "./src",
+    "declaration": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true, // ważne przy pracy z generowanymi plikami
+    "forceConsistentCasingInFileNames": true,
+    "strict": true
   },
-  "include": ["*.d.ts", "**/*.ts", "**/*.tsx"],
-  "exclude": ["dist", "build", "node_modules"]
+  "include": ["src/**/*.ts"],
+  "exclude": ["dist", "node_modules", "generated"]
 }
