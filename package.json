@@ -1,9 +1,6 @@
 {
   "private": true,
-  "workspaces": [
-    "apps/*",
-    "packages/*"
-  ],
+  "workspaces": ["apps/*", "packages/*"],
   "prisma": {
     "schema": "packages/database/prisma/schema.prisma",
     "seed": "tsx packages/database/src/seed.ts"
@@ -20,6 +17,7 @@
     "lint": "turbo run lint"
   },
   "devDependencies": {
+    "@biomejs/biome": "1.9.4",
     "prettier": "^3.2.5",
     "prisma": "latest",
     "tsx": "4.19.1",
