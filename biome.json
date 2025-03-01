@@ -7,7 +7,15 @@
   },
   "files": {
     "ignoreUnknown": false,
-    "ignore": ["package.json", "dist", "node_modules", "coverage", "yarn.lock"]
+    "ignore": [
+      "package.json",
+      "dist",
+      "node_modules",
+      "coverage",
+      "yarn.lock",
+      ".next",
+      "generated"
+    ]
   },
   "formatter": {
     "enabled": true,
@@ -25,7 +33,8 @@
   },
   "javascript": {
     "formatter": {
-      "quoteStyle": "single"
+      "quoteStyle": "double",
+      "jsxQuoteStyle": "single"
     },
     "parser": {
       "unsafeParameterDecoratorsEnabled": true
