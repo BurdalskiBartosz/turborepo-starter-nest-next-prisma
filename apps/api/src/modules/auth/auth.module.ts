@@ -11,7 +11,7 @@ import { CreateUserCommandHandler } from "./application/use-cases/commands/creat
 import { GetUserByEmailQueryHandler } from "./application/use-cases/queries/get-user-by-email/get-user-by-email.query-handler";
 import { HashingService } from "./application/hashing/hashing.service.abstract";
 import { ScryptService } from "./application/hashing/scrypt.service";
-import * as session from "express-session";
+import session from "express-session";
 import * as passport from "passport";
 import { RedisStore } from "connect-redis";
 import Redis from "ioredis";
@@ -61,7 +61,7 @@ export class AuthModule implements NestModule {
           cookie: sessionConfig.cookie,
         }),
         passport.initialize(),
-        passport.session(),
+        passport.session()
       )
       .forRoutes("*");
   }
